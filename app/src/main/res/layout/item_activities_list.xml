@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/tag_icon"
+        android:layout_width="@dimen/middle_icon"
+        android:layout_height="@dimen/middle_icon"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/middle_margin"
+        tools:background="@drawable/icon" />
+
+    <ImageButton
+        android:id="@+id/stop_img_btn"
+        android:layout_width="@dimen/large_icon"
+        android:layout_height="@dimen/large_icon"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/middle_margin"
+        android:background="@drawable/stop_btn" />
+
+    <TextView
+        android:id="@+id/tag_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tag_icon"
+        android:layout_toEndOf="@id/tag_icon"
+        android:layout_toRightOf="@id/tag_icon"
+        android:textSize="@dimen/text_small"
+        tools:text="tag name" />
+
+    <TextView
+        android:id="@+id/duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/tag_icon"
+        android:layout_toEndOf="@id/tag_icon"
+        android:layout_toRightOf="@id/tag_icon"
+        android:textSize="@dimen/text_middle"
+        tools:text="00:00:00" />
+
+    <ImageButton
+        android:id="@+id/pause_img_btn"
+        android:layout_width="@dimen/large_icon"
+        android:layout_height="@dimen/large_icon"
+        android:layout_alignTop="@+id/stop_img_btn"
+        android:layout_toLeftOf="@+id/stop_img_btn"
+        android:layout_toStartOf="@+id/stop_img_btn"
+        tools:background="@drawable/resume_btn" />
+
+    <TextView
+        android:id="@+id/duty_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/tag_name"
+        android:layout_marginLeft="@dimen/middle_margin"
+        android:layout_marginRight="@dimen/middle_margin"
+        android:layout_toEndOf="@id/duration"
+        android:layout_toLeftOf="@id/pause_img_btn"
+        android:layout_toRightOf="@id/duration"
+        android:layout_toStartOf="@id/pause_img_btn" />
+</RelativeLayout>
