@@ -75,16 +75,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        /*******************AddActivitiesFragment's data*********************/
         /*******************AddTagFragment's data****************************************/
         updateTagList();
-        Log.e("MainActivity", "onStart");
-        Log.e("MainActivity", "tagList " + tagList.size());
         updateSetList();
-        Log.e("MainActivity", "setList " + setList.size());
         /********************HistoryFragment's data**************************************/
         updateActivity();
-        Log.e("MainActivity", "historyList " + historyList.size());
         /********************刷新*********************************/
         changedAll();
     }

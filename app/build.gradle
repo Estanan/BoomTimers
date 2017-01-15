@@ -28,4 +28,5 @@ dependencies {
     debugCompile 'im.dino:dbinspector:3.2.4@aar'
     compile 'de.halfbit:pinned-section-listview:1.0.0'
     compile 'com.tonicartos:superslim:0.4.+'
+    compile 'com.larswerkman:HoloColorPicker:1.5'
 }

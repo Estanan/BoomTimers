@@ -12,7 +12,19 @@ public class Tag implements Serializable {
     private int color;//R.color
     private int icon;
 
+    @Override
+    public String toString() {
+        return "Tag{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", color=" + color +
+                ", icon=" + icon +
+                '}';
+    }
+
+
     public Tag() {
+
     }
 
     public Tag(String name, int color, int icon) {

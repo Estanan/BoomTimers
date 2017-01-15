@@ -46,6 +46,8 @@
     <string name="end_second">endSecond</string>
     <string name="activity_id">setId</string>
     <string name="order_tag">orderTag</string>
+    <string name="ok">OK</string>
+    <string name="no">Cancle</string>
 
 
 </resources>

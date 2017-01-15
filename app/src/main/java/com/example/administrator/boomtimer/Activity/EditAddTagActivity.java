@@ -15,11 +15,14 @@ import com.example.administrator.boomtimer.R;
 import com.example.administrator.boomtimer.db.DB;
 import com.example.administrator.boomtimer.model.Tag;
 import com.example.administrator.boomtimer.util.SmallUtil;
+import com.example.administrator.boomtimer.widgets.ColorPickerDialog;
+import com.example.administrator.boomtimer.widgets.IconPickerDialog;
+import com.larswerkman.holocolorpicker.ColorPicker;
 
 /**
  * 添加活动
  */
-public class EditAddTagActivity extends AppCompatActivity {
+public class EditAddTagActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText tagName;
     private Button selectColor;
@@ -29,31 +32,55 @@ public class EditAddTagActivity extends AppCompatActivity {
     private Tag tag;
     private Tag newTag;
     private DB mDB;
+    private Intent intent;
+    private Toolbar toolbar;
+    ColorPickerDialog colorPicker;
+    IconPickerDialog iconPicker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_add_tag);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        initView();
+        initData();
+    }
+
+    private void initData() {
+        mDB = DB.getInstance(this);
+        newTag = new Tag();
+        intent = getIntent();
+        tag = (Tag) intent.getSerializableExtra("tag");
+        //修改还是添加
+        if (tag.getName().equals("")) {
+            //添加新的
+        } else {
+            //修改已有
+            tagName.setText(tag.getName());
+        }
+        SmallUtil.changeColor(selectIcon, tag);
+        selectColor.setBackgroundResource(tag.getColor());
+    }
+
+    private void initView() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         tagName = (EditText) findViewById(R.id.tag_name_edit);
         selectColor = (Button) findViewById(R.id.tag_color_select);
         selectIcon = (AppCompatImageView) findViewById(R.id.tag_icon_select);
-        mDB = DB.getInstance(this);
-
+        selectColor.setOnClickListener(this);
+        selectIcon.setOnClickListener(this);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.ok:
-//                        newTag = new Tag(tagName.getText(),
-//                                ,
-//                                );
+                        newTag.setName(tagName.getText().toString());
+                        newTag.setColor(R.color.red_transparent);
+                        newTag.setIcon(0);
                         if (!tag.equals(newTag)) {
                             mDB.addAboutTag(newTag);
                             backIntent(newTag);
                         }
-//                        //MainActivity.updateAdapter(1);
                         finish();
                         break;
                     case R.id.cancel:
@@ -61,28 +88,6 @@ public class EditAddTagActivity extends AppCompatActivity {
                         break;
                 }
                 return true;
-            }
-        });
-        Intent intent = getIntent();
-        tag = (Tag) intent.getSerializableExtra("tag");
-        if (tag.getName().equals("")) {
-        } else {
-            tagName.setText(tag.getName());
-        }
-        SmallUtil.changeColor(selectIcon, tag);
-        selectColor.setBackgroundResource(tag.getColor());
-
-        selectColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        selectIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(EditAddTagActivity.this, SelectIconActivity.class);
-                startActivity(intent);
             }
         });
     }
@@ -98,5 +103,31 @@ public class EditAddTagActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_edit_tag, menu);
         return true;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.tag_icon_select:
+                iconPicker = IconPickerDialog.getInstance(this);
+                iconPicker.setListener(this, new IconPickerDialog.ICustomDialogEventListener() {
+                    @Override
+                    public void customDialogEvent(int color) {
+
+                    }
+                });
+                iconPicker.show();
+                break;
+            case R.id.tag_color_select:
+                colorPicker = ColorPickerDialog.getInstance(this);
+                colorPicker.setListener(this, new ColorPickerDialog.ICustomDialogEventListener() {
+                    @Override
+                    public void customDialogEvent(int color) {
+                        selectColor.setBackgroundColor(color);
+                    }
+                });
+                colorPicker.show();
+                break;
+        }
     }
 }
