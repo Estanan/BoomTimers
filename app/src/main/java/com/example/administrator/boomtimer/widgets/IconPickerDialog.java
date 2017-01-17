@@ -10,9 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Adapter;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.administrator.boomtimer.Adapter.ResyclerAdapter;
 import com.example.administrator.boomtimer.R;
+
+import static com.example.administrator.boomtimer.R.id.picker;
 
 
 /**
@@ -22,7 +25,6 @@ import com.example.administrator.boomtimer.R;
 public class IconPickerDialog extends Dialog {
     private static final String TAG = "ColorPickerDialog";
     Context mContext;
-    Button ok, cancel;
     private static IconPickerDialog colorPickerDialog;
     private RecyclerView mRecyclerView;
     private ResyclerAdapter mAdapter;
@@ -64,23 +66,17 @@ public class IconPickerDialog extends Dialog {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.dialog_iconpicker, null);
         this.setContentView(layout);
-        ok = (Button) findViewById(R.id.ok);
-        cancel = (Button) findViewById(R.id.cancel);
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_select_icon);
 
         mRecyclerView.setLayoutManager(new GridLayoutManager(mContext, 4));
-        mRecyclerView.setAdapter(mAdapter = new ResyclerAdapter(mContext));
+        mAdapter = new ResyclerAdapter(mContext);
+        mRecyclerView.setAdapter(mAdapter);
 
-        ok.setOnClickListener(new View.OnClickListener() {
+        mAdapter.setOnItemClickListener(new ResyclerAdapter.OnRecyclerViewItemClickListener() {
             @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
-
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            public void onItemClick(View view, String data) {
+                Toast.makeText(mContext, data, Toast.LENGTH_LONG).show();
+                onCustomDialogEventListener.customDialogEvent(Integer.parseInt(data));
                 dismiss();
             }
         });

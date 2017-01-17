@@ -46,7 +46,7 @@ public class TagListAdapter extends RecyclerView.Adapter<TagListAdapter.MyViewHo
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.tv.setText(MainActivity.tagList.get(position).getName());
-        SmallUtil.changeColor(holder.iv, MainActivity.tagList.get(position));
+//        SmallUtil.changeColor(holder.iv, MainActivity.tagList.get(position));
 //        holder.iv.setBackground(icon);
         holder.itemView.setTag(MainActivity.tagList.get(position));
     }

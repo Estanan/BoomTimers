@@ -23,11 +23,23 @@ public class ResyclerAdapter extends RecyclerView.Adapter<ResyclerAdapter.MyView
         this.context = context;
     }
 
+    private OnRecyclerViewItemClickListener mOnItemClickListener = null;
+
+    //define interface
+    public static interface OnRecyclerViewItemClickListener {
+        void onItemClick(View view, String data);
+    }
+
+    public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
                 context).inflate(R.layout.item_icon, parent,
                 false));
+
         return holder;
     }
 
@@ -35,6 +47,12 @@ public class ResyclerAdapter extends RecyclerView.Adapter<ResyclerAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, int position) {
         final SelectIconItem item = mItems.get(position);
         holder.imageView.setBackgroundResource(getResId(item.getItem(), R.drawable.class));
+        holder.imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mOnItemClickListener.onItemClick(view, getResId(item.getItem(), R.drawable.class) + "");
+            }
+        });
     }
 
     @Override

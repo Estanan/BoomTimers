@@ -36,6 +36,7 @@ public class EditAddTagActivity extends AppCompatActivity implements View.OnClic
     private Toolbar toolbar;
     ColorPickerDialog colorPicker;
     IconPickerDialog iconPicker;
+    private int colorId, iconId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +76,8 @@ public class EditAddTagActivity extends AppCompatActivity implements View.OnClic
                 switch (item.getItemId()) {
                     case R.id.ok:
                         newTag.setName(tagName.getText().toString());
-                        newTag.setColor(R.color.red_transparent);
-                        newTag.setIcon(0);
+                        newTag.setColor(colorId);
+                        newTag.setIcon(iconId);
                         if (!tag.equals(newTag)) {
                             mDB.addAboutTag(newTag);
                             backIntent(newTag);
@@ -112,8 +113,9 @@ public class EditAddTagActivity extends AppCompatActivity implements View.OnClic
                 iconPicker = IconPickerDialog.getInstance(this);
                 iconPicker.setListener(this, new IconPickerDialog.ICustomDialogEventListener() {
                     @Override
-                    public void customDialogEvent(int color) {
-
+                    public void customDialogEvent(int icon) {
+                        selectIcon.setImageResource(icon);
+                        iconId = icon;
                     }
                 });
                 iconPicker.show();
@@ -124,6 +126,7 @@ public class EditAddTagActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void customDialogEvent(int color) {
                         selectColor.setBackgroundColor(color);
+                        colorId = color;
                     }
                 });
                 colorPicker.show();
