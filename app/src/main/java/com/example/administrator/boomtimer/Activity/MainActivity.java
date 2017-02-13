@@ -1,13 +1,22 @@
 package com.example.administrator.boomtimer.Activity;
 
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 
 import com.example.administrator.boomtimer.Adapter.ActivitiesListAdapter;
 import com.example.administrator.boomtimer.Adapter.HistoryListAdapter;
@@ -32,8 +41,16 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private TagListAdapter tagListAdapter;
-    Toolbar toolbar;
+    private ListAdapter adapter;
+    MyFragmentPagerAdapter pagerAdapter;
 
+    Toolbar toolbar;
+    ViewPager viewPager;
+    TabLayout tabLayout;
+    DrawerLayout mDrawerLayout;
+    private ListView lvLeftMenu;
+    private ActionBarDrawerToggle mDrawerToggle;
+    private String[] lvs = {"统计", "趋势", "设置"};
 //    private List<Tag> mDatas = init();
 
     @Override
@@ -41,21 +58,41 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
         setSupportActionBar(toolbar);
-        Log.e("MainActivity", "onCreate");
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        MyFragmentPagerAdapter pagerAdapter;
-        ViewPager viewPager;
-        TabLayout tabLayout;
         pagerAdapter = new MyFragmentPagerAdapter(getFragmentManager(), 4, this);
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        viewPager.setOffscreenPageLimit(4);
+        initView();
+//        viewPager.setOffscreenPageLimit(4);
         viewPager.setAdapter(pagerAdapter);
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
+                R.string.cancel, R.string.ok) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+            }
 
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+        };
+        mDrawerToggle.syncState();
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lvs);
+        lvLeftMenu.setAdapter(adapter);
         mDB = DB.getInstance(this);
+    }
+
+    private void initView() {
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
+        lvLeftMenu = (ListView) findViewById(R.id.lv_left_menu);
     }
 
 //    public void setTitle(String title) {
@@ -109,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
             MyTime begin = historyList.get(0).getActivities().getBeginTime();
             String beginStr = SmallUtil.yearMouthDay(begin);
             History4View firstTitle = new History4View(VIEWTYPE, beginStr);
-            historyList.add(0,firstTitle);
+            historyList.add(0, firstTitle);
             for (int i = 1; i < historyList.size(); i++) {
                 String then = SmallUtil.yearMouthDay(historyList.get(i).getActivities().getBeginTime());
                 if (!then.equals(beginStr)) {
@@ -119,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
                     beginStr = then;
                 }
             }
-        } catch(Resources.NotFoundException e){
+        } catch (Resources.NotFoundException e) {
             historyList = new ArrayList<>();
         }
     }
@@ -155,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<SetItemInOrder> view2Order(List<ActivityItem4View> customSet4ViewList) {
         List<SetItemInOrder> list = new ArrayList<>();
-        for(int i = 0; i < customSet4ViewList.size(); i++) {
+        for (int i = 0; i < customSet4ViewList.size(); i++) {
             SetItemInOrder setItemInOrder = new SetItemInOrder(
                     customSet4ViewList.get(i).getSet().getSetID(),
                     customSet4ViewList.get(i).getState());
