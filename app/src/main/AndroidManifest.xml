@@ -20,12 +20,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.administrator.boomtimer.Activity.EditAddTagActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="com.example.administrator.boomtimer.Activity.TagLookingActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name="com.example.administrator.boomtimer.Activity.SelectIconActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name="com.example.administrator.boomtimer.Activity.EditAddTagActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.example.administrator.boomtimer.Activity.TagLookingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.example.administrator.boomtimer.Activity.SelectIconActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.HistoryActivity" />
+        <activity android:name=".Activity.SettingActivity" />
+        <activity android:name=".Activity.TrendeActivity" />
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.example.administrator.boomtimer.Activity;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
@@ -14,9 +15,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.example.administrator.boomtimer.Adapter.ActivitiesListAdapter;
 import com.example.administrator.boomtimer.Adapter.HistoryListAdapter;
@@ -35,36 +39,46 @@ import com.example.administrator.boomtimer.model.Tag;
 import com.example.administrator.boomtimer.util.SmallUtil;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+import static com.example.administrator.boomtimer.R.id.toolbar;
+
+public class MainActivity extends BaseActivity {
 
     private RecyclerView recyclerView;
     private TagListAdapter tagListAdapter;
-    private ListAdapter adapter;
     MyFragmentPagerAdapter pagerAdapter;
 
-    Toolbar toolbar;
     ViewPager viewPager;
     TabLayout tabLayout;
     DrawerLayout mDrawerLayout;
     private ListView lvLeftMenu;
     private ActionBarDrawerToggle mDrawerToggle;
-    private String[] lvs = {"统计", "趋势", "设置"};
-//    private List<Tag> mDatas = init();
+    private List lvs;
+    //    private List<Tag> mDatas = init();
+    private SimpleAdapter simpleAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        pagerAdapter = new MyFragmentPagerAdapter(getFragmentManager(), 4, this);
         initView();
+
+        mDB = DB.getInstance(this);
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    private void initView() {
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
+        lvLeftMenu = (ListView) findViewById(R.id.lv_left_menu);
+        pagerAdapter = new MyFragmentPagerAdapter(getFragmentManager(), 4, this);
 //        viewPager.setOffscreenPageLimit(4);
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -83,21 +97,57 @@ public class MainActivity extends AppCompatActivity {
         };
         mDrawerToggle.syncState();
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, lvs);
-        lvLeftMenu.setAdapter(adapter);
-        mDB = DB.getInstance(this);
+        simpleAdapter = new SimpleAdapter(this, setData(), R.layout.listitem,
+                new String[]{"title", "img"}, new int[]{R.id.menu_title, R.id.menu_image});
+        lvLeftMenu.setOnItemClickListener(new MyListener());
+        lvLeftMenu.setAdapter(simpleAdapter);
     }
 
-    private void initView() {
-        viewPager = (ViewPager) findViewById(R.id.viewPager);
-        tabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
-        lvLeftMenu = (ListView) findViewById(R.id.lv_left_menu);
+    class MyListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+            Map<String, Object> mMap = (Map<String, Object>) simpleAdapter.getItem(position);
+            Toast.makeText(MainActivity.this, mMap.get("title").toString(), Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent();
+            switch (mMap.get("title").toString()) {
+                case "设置":
+                    intent = new Intent(MainActivity.this, SettingActivity.class);
+                    break;
+                case "趋势":
+                    intent = new Intent(MainActivity.this, HistoryActivity.class);
+                    break;
+                case "统计":
+                    intent = new Intent(MainActivity.this, TrendeActivity.class);
+                    break;
+                default:
+                    break;
+            }
+            startActivity(intent);
+        }
+
     }
 
-//    public void setTitle(String title) {
-//        toolbar.setTitle(title);
-//    }
+    private List<Map<String, Object>> setData() {
+        //map.put(参数名字,参数值)
+        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("title", "设置");
+        map.put("img", R.drawable.icon);
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("title", "趋势");
+        map.put("img", R.drawable.icon);
+        list.add(map);
+
+        map = new HashMap<String, Object>();
+        map.put("title", "统计");
+        map.put("img", R.drawable.icon);
+        list.add(map);
+        return list;
+    }
 
     public static DB mDB;
     public static List<Tag> tagList;
