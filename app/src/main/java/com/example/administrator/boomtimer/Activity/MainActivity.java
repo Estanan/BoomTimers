@@ -10,16 +10,22 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.boomtimer.Adapter.ActivitiesListAdapter;
@@ -59,12 +65,12 @@ public class MainActivity extends BaseActivity {
     private List lvs;
     //    private List<Tag> mDatas = init();
     private SimpleAdapter simpleAdapter;
+    private ArrayList<String> mDatas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-
         mDB = DB.getInstance(this);
     }
 
@@ -78,8 +84,17 @@ public class MainActivity extends BaseActivity {
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
         lvLeftMenu = (ListView) findViewById(R.id.lv_left_menu);
+        recyclerView = (RecyclerView) findViewById(R.id.timeblock);
         pagerAdapter = new MyFragmentPagerAdapter(getFragmentManager(), 4, this);
 //        viewPager.setOffscreenPageLimit(4);
+        initData();
+        setView();
+    }
+
+    //设置view
+    private void setView() {
+        recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
+        recyclerView.setAdapter(new HomeAdapter());
         viewPager.setAdapter(pagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
@@ -249,5 +264,43 @@ public class MainActivity extends BaseActivity {
             list.add(setItemInOrder);
         }
         return list;
+    }
+
+    protected void initData() {
+        mDatas = new ArrayList<String>();
+        for (int i = 0; i < 48; i++) {
+            mDatas.add("" + i);
+        }
+    }
+
+    class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
+
+        @Override
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
+                    MainActivity.this).inflate(R.layout.item_home, parent,
+                    false));
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(MyViewHolder holder, int position) {
+            holder.tv.setText(mDatas.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mDatas.size();
+        }
+
+        class MyViewHolder extends RecyclerView.ViewHolder {
+
+            Button tv;
+
+            public MyViewHolder(View view) {
+                super(view);
+                tv = (Button) view.findViewById(R.id.half_hour);
+            }
+        }
     }
 }
