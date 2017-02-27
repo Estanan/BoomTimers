@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.administrator.boomtimer.Activity.MainActivity;
@@ -46,7 +47,8 @@ public class TagListAdapter extends RecyclerView.Adapter<TagListAdapter.MyViewHo
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         holder.tv.setText(MainActivity.tagList.get(position).getName());
-//        SmallUtil.changeColor(holder.iv, MainActivity.tagList.get(position));
+        SmallUtil.changeIcon(holder.iv,MainActivity.tagList.get(position));
+        SmallUtil.changeColor(holder.tagList, MainActivity.tagList.get(position));
 //        holder.iv.setBackground(icon);
         holder.itemView.setTag(MainActivity.tagList.get(position));
     }
@@ -58,11 +60,13 @@ public class TagListAdapter extends RecyclerView.Adapter<TagListAdapter.MyViewHo
 
     class MyViewHolder extends RecyclerView.ViewHolder {
         AppCompatImageView iv;
+        LinearLayout tagList;
         TextView tv;
         public MyViewHolder(View view) {
             super(view);
             iv = (AppCompatImageView) view.findViewById(R.id.iv);
             tv = (TextView) view.findViewById(R.id.tv);
+            tagList= (LinearLayout) view.findViewById(R.id.tag_list_item);
         }
     }
 

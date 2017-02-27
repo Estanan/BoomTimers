@@ -105,7 +105,7 @@ public class ActivitiesListAdapter extends RecyclerView.Adapter<ActivitiesListAd
         // 会导致imagebutton前景与背景不一样大小形状
         // 因为android:src的图是不会拉伸的
 //        viewHolder.tagIcon.setBackgroundResource(setList.get(position).getTag().getIcon());
-        SmallUtil.changeColor(viewHolder.tagIcon, MainActivity.setList.get(position).getTag());
+        SmallUtil.changeIcon(viewHolder.tagIcon, MainActivity.setList.get(position).getTag());
         viewHolder.tagNameTv.setText(MainActivity.setList.get(position).getTag().getName());
         int duration = MainActivity.setList.get(position).getSet().getDuration();
         if (duration == 0) {

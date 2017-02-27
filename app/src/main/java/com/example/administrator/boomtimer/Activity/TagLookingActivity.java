@@ -77,7 +77,7 @@ public class TagLookingActivity extends AppCompatActivity {
 
     private void init(Tag tag) {
         tagName.setText(tag.getName());
-        SmallUtil.changeColor(tagIcon, tag);
+        SmallUtil.changeIcon(tagIcon, tag);
     }
 
     @Override

@@ -58,7 +58,7 @@ public class EditAddTagActivity extends AppCompatActivity implements View.OnClic
             //修改已有
             tagName.setText(tag.getName());
         }
-        SmallUtil.changeColor(selectIcon, tag);
+        SmallUtil.changeIcon(selectIcon, tag);
         selectColor.setBackgroundResource(tag.getColor());
     }
 

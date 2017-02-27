@@ -59,7 +59,7 @@ public class HistoryListAdapter extends BaseAdapter implements PinnedSectionList
                 } else {
                     itemViewHolder = (ItemViewHolder) convertView.getTag();
                 }
-                SmallUtil.changeColor(itemViewHolder.tagIcon, item.getTag());
+                SmallUtil.changeIcon(itemViewHolder.tagIcon, item.getTag());
                 itemViewHolder.begin.setText(SmallUtil.monthDay(item.getActivities().getBeginTime()) + "-");
                 itemViewHolder.end.setText(SmallUtil.monthDay(item.getActivities().getEndTime()));
 //                itemViewHolder.commit.setText();

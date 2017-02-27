@@ -5,7 +5,9 @@ import android.support.v7.widget.AppCompatImageView;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 
+import com.example.administrator.boomtimer.R;
 import com.example.administrator.boomtimer.model.Tag;
 import com.example.administrator.boomtimer.model.MyTime;
 
@@ -43,10 +45,15 @@ public class SmallUtil {
         return metrics;
     }
 
-    public static void changeColor(AppCompatImageView iv, Tag tag) {
-        iv.setImageResource(tag.getIcon());
+    public static void changeIcon(AppCompatImageView iv, Tag tag) {
+        iv.setImageResource(R.drawable.ic_launcher);
         int color = MyApplication.getContext().getResources().getColor(tag.getColor());
         iv.setColorFilter(color);
+    }
+
+    public static void changeColor(LinearLayout iv, Tag tag) {
+        int color = MyApplication.getContext().getResources().getColor(tag.getColor());
+        iv.setBackgroundColor(color);
     }
 
     public static MyTime gainTime() {

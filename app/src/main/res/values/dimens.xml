@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="small_icon">30dp</dimen>
+    <dimen name="small_icon">20dp</dimen>
     <dimen name="middle_icon">40dp</dimen>
     <dimen name="large_icon">50dp</dimen>
     <dimen name="large_margin">20dp</dimen>
@@ -16,4 +16,5 @@
     <dimen name="resycler_margin">20dp</dimen>
     <dimen name="button_padding">10dp</dimen>
     <dimen name="big_icon">40dp</dimen>
+    <dimen name="list_margin">2dp</dimen>
 </resources>

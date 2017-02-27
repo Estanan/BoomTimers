@@ -48,6 +48,7 @@
     <string name="order_tag">orderTag</string>
     <string name="ok">OK</string>
     <string name="no">Cancle</string>
+    <string name="clear">清除</string>
 
 
 </resources>
