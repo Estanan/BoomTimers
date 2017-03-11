@@ -8,6 +8,14 @@ import android.view.View;
 import com.example.administrator.boomtimer.Adapter.HistoryListAdapter;
 import com.example.administrator.boomtimer.Fragment.BaseFragment;
 import com.example.administrator.boomtimer.R;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 import de.halfbit.pinnedsection.PinnedSectionListView;
 
@@ -30,8 +38,14 @@ public class HistoryActivity extends BaseActivity {
 
     private PinnedSectionListView psListView;
     public static HistoryListAdapter adapter;
-
+    private LineChart lineChart;
+    private LineData data;
+    private ArrayList<String> xVals;
+    private LineDataSet dataSet;
+    private ArrayList<Entry> yVals;
+    private Random random;
     public void initViews() {
+        lineChart= (LineChart) findViewById(R.id.spread_line_chart);
         psListView = (PinnedSectionListView) findViewById(R.id.pinned_section_list_view);
         psListView.setEmptyView(findViewById(R.id.empty_view));
         loadData();
@@ -43,6 +57,20 @@ public class HistoryActivity extends BaseActivity {
         Log.e("AddActivitiesFragment", "loadData");
 //        MainActivity.setAdapter(adapter);
 //        getActivity().setTitle("History");
+        xVals=new ArrayList<>();
+        yVals=new ArrayList<>();
+        random=new Random();
+        for(int i=0;i<12;i++){
+            float profix=random.nextFloat();
+            yVals.add(new Entry(profix,i));
+            xVals.add((i+1)+"月");
+        }
+        dataSet=new LineDataSet(yVals,"公司年度利润");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        data=new LineData(xVals,dataSet);
+        lineChart.setData(data);
+        lineChart.setDescription("公司年度利润");
+        lineChart.animateY(3000);
     }
 
     @Override
