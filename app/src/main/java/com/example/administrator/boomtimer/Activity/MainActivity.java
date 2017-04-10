@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,6 +60,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private RecyclerView tagRecyclerView;
     private Button listShow;
     private TagListAdapter tagListAdapter;
+    private TextView mChecked;
     MyFragmentPagerAdapter pagerAdapter;
 
     ViewPager viewPager;
@@ -69,6 +71,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private List lvs;
     //    private List<Tag> mDatas = init();
     private SimpleAdapter simpleAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initView() {
+        mChecked = (TextView) findViewById(R.id.add_content);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.dl_left);
@@ -99,7 +103,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     //设置view
     private void setView() {
         recyclerView.setLayoutManager(new GridLayoutManager(MainActivity.this, 2));
-        recyclerView.setAdapter(new DuoXuanAdapter());
+        recyclerView.setAdapter(new SelectAdapter());
         tagRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
         tagRecyclerView.setAdapter(new TagListAdapter(this, false));
         viewPager.setAdapter(pagerAdapter);
@@ -281,6 +285,133 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             list.add(setItemInOrder);
         }
         return list;
+    }
+
+
+    public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
+        private ArrayList<String> mList = new ArrayList<>();
+
+        private SparseBooleanArray mSelectedPositions = new SparseBooleanArray();
+        private boolean mIsSelectable = false;
+        private ArrayList<String> mDatas;
+
+
+        public SelectAdapter() {
+            initAdapterData();
+            if (mDatas == null) {
+                throw new IllegalArgumentException("model Data must not be null");
+            }
+            mList = mDatas;
+        }
+
+        private void initAdapterData() {
+            mDatas = new ArrayList<String>();
+            for (int i = 0; i < 48; i++) {
+                int h = (i + 1) / 2;
+                String m = (i + 1) % 2 == 0 ? "00" : "30";
+                Log.i("shijian", i + "");
+                mDatas.add("" + h + ":" + m);
+            }
+        }
+
+        //更新adpter的数据和选择状态
+        public void updateDataSet(ArrayList<String> list) {
+            mSelectedPositions = new SparseBooleanArray();
+            mChecked.setText("已选择" + 0 + "小时");
+        }
+
+
+        //获得选中条目的结果
+        public ArrayList<String> getSelectedItem() {
+            ArrayList<String> selectList = new ArrayList<>();
+            for (int i = 0; i < mDatas.size(); i++) {
+                if (isItemChecked(i)) {
+                    selectList.add(mDatas.get(i));
+                }
+            }
+            return selectList;
+        }
+
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+            View itemView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_home, viewGroup, false);
+            return new ListItemViewHolder(itemView);
+        }
+
+        //设置给定位置条目的选择状态
+        private void setItemChecked(int position, boolean isChecked) {
+            mSelectedPositions.put(position, isChecked);
+        }
+
+        //根据位置判断条目是否选中
+        private boolean isItemChecked(int position) {
+            return mSelectedPositions.get(position);
+        }
+
+        //根据位置判断条目是否可选
+        private boolean isSelectable() {
+            return mIsSelectable;
+        }
+
+        //设置给定位置条目的可选与否的状态
+        private void setSelectable(boolean selectable) {
+            mIsSelectable = selectable;
+        }
+
+        //绑定界面，设置监听
+        @Override
+        public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int i) {
+            //设置条目状态
+            ((ListItemViewHolder) holder).checkBox.setChecked(isItemChecked(i));
+            ((ListItemViewHolder) holder).checkBox.setText(mDatas.get(i));
+
+            //checkBox的监听
+            ((ListItemViewHolder) holder).checkBox.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isItemChecked(i)) {
+                        setItemChecked(i, false);
+                    } else {
+                        setItemChecked(i, true);
+                    }
+                    mChecked.setText("已选择" + getSelectedItem().size()*0.5 + "小时");
+                }
+            });
+
+            //条目view的监听
+            ((ListItemViewHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isItemChecked(i)) {
+                        setItemChecked(i, false);
+                    } else {
+                        setItemChecked(i, true);
+                    }
+                    notifyItemChanged(i);
+                    mChecked.setText("已选择" +getSelectedItem().size()*0.5 + "小时");
+                }
+            });
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return mDatas == null ? 0 : mDatas.size();
+        }
+
+        public class ListItemViewHolder extends RecyclerView.ViewHolder {
+            //ViewHolder
+            CheckBox checkBox;
+
+            ListItemViewHolder(View view) {
+                super(view);
+                this.checkBox = (CheckBox) view.findViewById(R.id.half_hour);
+
+            }
+        }
     }
 
 }
