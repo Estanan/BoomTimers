@@ -105,6 +105,7 @@ public class DuoXuanAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             public void onClick(View v) {
                 if (isItemChecked(i)) {
                     setItemChecked(i, false);
+
                 } else {
                     setItemChecked(i, true);
                 }

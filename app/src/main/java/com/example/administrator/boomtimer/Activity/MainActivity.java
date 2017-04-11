@@ -47,6 +47,7 @@ import com.example.administrator.boomtimer.model.SetItemInOrder;
 import com.example.administrator.boomtimer.model.Tag;
 import com.example.administrator.boomtimer.util.SmallUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +72,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private List lvs;
     //    private List<Tag> mDatas = init();
     private SimpleAdapter simpleAdapter;
-
+    private TextView mTvCurrentTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +87,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initView() {
+        mTvCurrentTime= (TextView) findViewById(R.id.tv_date);
         mChecked = (TextView) findViewById(R.id.add_content);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         tabLayout = (TabLayout) findViewById(R.id.tabLayout);
@@ -97,6 +99,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         listShow.setOnClickListener(this);
         pagerAdapter = new MyFragmentPagerAdapter(getFragmentManager(), 4, this);
 //        viewPager.setOffscreenPageLimit(4);
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        String date=sdf.format(new java.util.Date());
+
+        mTvCurrentTime.setText(date);
+
         setView();
     }
 
