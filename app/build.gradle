@@ -3,8 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.1"
-    aaptOptions.cruncherEnabled = false
-    aaptOptions.useNewCruncher = false
+
     defaultConfig {
         applicationId "com.example.administrator.boomtimer"
         minSdkVersion 16
@@ -20,12 +19,6 @@ android {
     }
 }
 
-allprojects {
-    repositories {
-        mavenCentral()
-    }
-}
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -37,5 +30,4 @@ dependencies {
     compile 'com.tonicartos:superslim:0.4.+'
     compile 'com.larswerkman:HoloColorPicker:1.5'
     compile files('libs/mpandroidchartlibrary-2-0-9.jar')
-
 }

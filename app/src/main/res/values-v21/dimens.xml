@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="resycler_margin">20dp</dimen>
-    <dimen name="button_padding">10dp</dimen>
-    <dimen name="big_icon">40dp</dimen>
-    <dimen name="list_margin">2dp</dimen>
 </resources>

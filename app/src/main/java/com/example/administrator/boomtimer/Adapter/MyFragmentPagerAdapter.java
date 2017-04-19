@@ -13,6 +13,7 @@ import com.example.administrator.boomtimer.Fragment.AddActivitiesFragment;
 import com.example.administrator.boomtimer.Fragment.HistoryFragment;
 import com.example.administrator.boomtimer.Fragment.MoreFragment;
 import com.example.administrator.boomtimer.Fragment.AddTagFragment;
+import com.example.administrator.boomtimer.Fragment.NoteTimeFragment;
 import com.example.administrator.boomtimer.R;
 
 public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -34,20 +35,24 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
                 Fragment tab1 = new AddActivitiesFragment();
                 return tab1;
             case 1:
-                Fragment tab2 = new HistoryFragment();
+                Fragment tab2 = new NoteTimeFragment();
                 return tab2;
             case 2:
-                Fragment tab3 = new AddTagFragment();
+                Fragment tab3 = new HistoryFragment();
                 return tab3;
             case 3:
-                Fragment tab4 = new MoreFragment();
+                Fragment tab4 = new AddTagFragment();
                 return tab4;
+            case 4:
+                Fragment tab5 = new MoreFragment();
+                return tab5;
         }
         return null;
     }
 
     private int[] imageResId = {
             R.drawable.ic_timer_white_24dp,
+            R.drawable.ic_import_contacts_white_24dp,
             R.drawable.ic_import_contacts_white_24dp,
             R.drawable.ic_storage_white_24dp,
             R.drawable.ic_more_horiz_white_24dp

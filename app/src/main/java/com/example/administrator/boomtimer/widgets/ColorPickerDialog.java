@@ -1,5 +1,6 @@
 package com.example.administrator.boomtimer.widgets;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ import static com.example.administrator.boomtimer.R.id.valuebar;
 
 public class ColorPickerDialog extends Dialog {
     private static final String TAG = "ColorPickerDialog";
-    Context mContext;
+    Activity mContext;
     SVBar svBar;
     OpacityBar opacityBar;
     SaturationBar saturationBar;
@@ -34,20 +35,18 @@ public class ColorPickerDialog extends Dialog {
     ColorPicker picker;
     private static ColorPickerDialog colorPickerDialog;
 
-    public ColorPickerDialog(Context context) {
+    public ColorPickerDialog(Activity context) {
         super(context);
         mContext = context;
     }
 
-    public ColorPickerDialog(Context context, int theme) {
+    public ColorPickerDialog(Activity context, int theme) {
         super(context, theme);
         mContext = context;
     }
 
-    public synchronized static ColorPickerDialog getInstance(Context context) {
-        if (colorPickerDialog == null) {
-            colorPickerDialog = new ColorPickerDialog(context);
-        }
+    public static ColorPickerDialog getInstance(Activity context) {
+        colorPickerDialog = new ColorPickerDialog(context);
         return colorPickerDialog;
     }
 
@@ -59,7 +58,7 @@ public class ColorPickerDialog extends Dialog {
     private ICustomDialogEventListener onCustomDialogEventListener;
 
     // 在构造函数中，设置进去回调函数
-    public void setListener(Context context,
+    public void setListener(Activity context,
                             ICustomDialogEventListener onCustomDialogEventListener) {
         mContext = context;
         this.onCustomDialogEventListener = onCustomDialogEventListener;

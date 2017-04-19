@@ -17,7 +17,6 @@ import com.example.administrator.boomtimer.model.Tag;
 import com.example.administrator.boomtimer.util.SmallUtil;
 import com.example.administrator.boomtimer.widgets.ColorPickerDialog;
 import com.example.administrator.boomtimer.widgets.IconPickerDialog;
-import com.larswerkman.holocolorpicker.ColorPicker;
 
 /**
  * 添加活动
@@ -82,7 +81,6 @@ public class EditAddTagActivity extends AppCompatActivity implements View.OnClic
                             mDB.addAboutTag(newTag);
                             backIntent(newTag);
                         }
-                        finish();
                         break;
                     case R.id.cancel:
                         finish();
@@ -97,7 +95,7 @@ public class EditAddTagActivity extends AppCompatActivity implements View.OnClic
         Intent intent = new Intent();
         intent.putExtra("new tag", tag);
         setResult(RESULT_OK, intent);
-        finish();
+        this.finish();
     }
 
     @Override
@@ -110,26 +108,30 @@ public class EditAddTagActivity extends AppCompatActivity implements View.OnClic
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.tag_icon_select:
-                iconPicker = IconPickerDialog.getInstance(this);
-                iconPicker.setListener(this, new IconPickerDialog.ICustomDialogEventListener() {
-                    @Override
-                    public void customDialogEvent(int icon) {
-                        selectIcon.setImageResource(icon);
-                        iconId = icon;
-                    }
-                });
-                iconPicker.show();
+                if (hasWindowFocus()) {
+                    iconPicker = IconPickerDialog.getInstance(EditAddTagActivity.this);
+                    iconPicker.show();
+                    iconPicker.setListener(this, new IconPickerDialog.ICustomDialogEventListener() {
+                        @Override
+                        public void customDialogEvent(int icon) {
+                            selectIcon.setImageResource(icon);
+                            iconId = icon;
+                        }
+                    });
+                }
                 break;
             case R.id.tag_color_select:
-                colorPicker = ColorPickerDialog.getInstance(this);
-                colorPicker.setListener(this, new ColorPickerDialog.ICustomDialogEventListener() {
-                    @Override
-                    public void customDialogEvent(int color) {
-                        selectColor.setBackgroundColor(color);
-                        colorId = color;
-                    }
-                });
-                colorPicker.show();
+                if (hasWindowFocus()) {
+                    colorPicker = ColorPickerDialog.getInstance(EditAddTagActivity.this);
+                    colorPicker.show();
+                    colorPicker.setListener(this, new ColorPickerDialog.ICustomDialogEventListener() {
+                        @Override
+                        public void customDialogEvent(int color) {
+                            selectColor.setBackgroundColor(color);
+                            colorId = color;
+                        }
+                    });
+                }
                 break;
         }
     }

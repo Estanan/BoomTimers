@@ -1,33 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
-    android:id="@+id/tag_list_item"
-    android:layout_margin="@dimen/list_margin"
+    android:layout_height="wrap_content"
     android:orientation="horizontal">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/iv"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_width="@dimen/small_icon"
+        android:layout_height="@dimen/small_icon"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_launcher"
-        android:layout_weight="1" />
+        android:layout_margin="@dimen/middle_margin" />
 
     <TextView
         android:id="@+id/tv"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:layout_weight="3"
-        android:textColor="#fff"
-        android:textSize="@dimen/text_small" />
-
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:src="@drawable/ic_action_help"
-        android:id="@+id/imageView" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/middle_margin"
+        android:textSize="@dimen/text_middle" />
 
 </LinearLayout>
