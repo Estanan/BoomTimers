@@ -26,6 +26,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name="com.example.administrator.boomtimer.Activity.SelectIconActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".Activity.TrendeActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

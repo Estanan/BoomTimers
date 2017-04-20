@@ -45,8 +45,8 @@ public class SmallUtil {
     }
 
     public static void changeIcon(AppCompatImageView iv, Tag tag) {
-        iv.setImageResource(R.drawable.ic_launcher);
-        int color = MyApplication.getContext().getResources().getColor(tag.getColor());
+        iv.setImageResource(tag.getIcon());
+        int color = tag.getColor();
         iv.setColorFilter(color);
     }
 

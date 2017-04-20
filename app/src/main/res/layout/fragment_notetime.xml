@@ -83,7 +83,6 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="10"
-            android:text="122313213"
             android:background="@drawable/edittext_background"
             android:enabled="true"
             android:gravity="top"

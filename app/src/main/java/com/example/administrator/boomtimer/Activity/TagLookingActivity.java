@@ -26,6 +26,7 @@ public class TagLookingActivity extends AppCompatActivity {
     private LinearLayout linearLayout;
     private Tag mTag;
     public DB mDB = DB.getInstance(this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,8 @@ public class TagLookingActivity extends AppCompatActivity {
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(TagLookingActivity.this, TrendeActivity.class);
+                startActivity(intent);
 //                查看条形图
             }
         });
@@ -69,7 +72,7 @@ public class TagLookingActivity extends AppCompatActivity {
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 Tag newTag = (Tag) data.getSerializableExtra("new tag");
-                    init(newTag);
+                init(newTag);
                 MainActivity.updateTagList();
             }
         }

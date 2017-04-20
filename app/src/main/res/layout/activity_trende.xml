@@ -10,6 +10,10 @@
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/spread_pie_chart"
         android:layout_width="match_parent"
-        android:layout_height="320dip" />
+        android:layout_height="220dip" />
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/spread_line_chart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp" />
 </LinearLayout>
