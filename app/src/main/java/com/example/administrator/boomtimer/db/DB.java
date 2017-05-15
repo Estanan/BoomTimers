@@ -573,4 +573,40 @@ public class DB {
         tagOrder.add(tag.getId());
         updateTagOrder(tagOrder);
     }
+
+    public List<ActivityItem4View> searchTag(int tagId) {
+        Cursor cursor = db.query(Constant.TABLE_SET, null, "tag_id like ?", new String[]{tagId + ""}, null, null, "id desc", null);
+        List<ActivityItem4View> list = new ArrayList<>();
+        Set set = null;
+        List<Set> mSetList = new ArrayList<>();
+        if (cursor.moveToFirst()) {
+            do {
+                set = new Set();
+                set.setSetID(cursor.getInt(cursor.getColumnIndex("id")));
+                set.setTagID(cursor.getInt(cursor.getColumnIndex(Constant.SET_TAG_ID)));
+                MyTime beginTime = new MyTime();
+                beginTime.setYear(cursor.getInt(cursor.getColumnIndex(Constant.SET_BEGIN_YEAR)));
+                beginTime.setMonth(cursor.getInt(cursor.getColumnIndex(Constant.SET_BEGIN_MONTH)));
+                beginTime.setDay(cursor.getInt(cursor.getColumnIndex(Constant.SET_BEGIN_DAY)));
+                beginTime.setHour(cursor.getInt(cursor.getColumnIndex(Constant.SET_BEGIN_HOUR)));
+                beginTime.setMinute(cursor.getInt(cursor.getColumnIndex(Constant.SET_BEGIN_MINUTE)));
+                beginTime.setSecond(cursor.getInt(cursor.getColumnIndex(Constant.SET_BEGIN_SECOND)));
+                set.setBeginTime(beginTime);
+                set.setCommit(cursor.getString(cursor.getColumnIndex(Constant.SET_COMMIT)));
+                set.setDuration(cursor.getInt(cursor.getColumnIndex(Constant.SET_DURATION)));
+                mSetList.add(set);
+            } while (cursor.moveToNext());
+        }
+        mSetList.size();
+        List<Tag> mTagList = new ArrayList<>();
+        ActivityItem4View customSet4View;
+        for (int i = 0; i < mSetList.size(); i++) {
+            customSet4View = new ActivityItem4View();
+            customSet4View.setTag(loadTag(mSetList.get(i).getTagID()));
+            customSet4View.setSet(mSetList.get(i));
+            list.add(customSet4View);
+        }
+        Log.i(TAG, "" + mTagList.size());
+        return list;
+    }
 }

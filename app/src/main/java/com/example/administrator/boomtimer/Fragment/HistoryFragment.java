@@ -41,9 +41,4 @@ public class HistoryFragment extends BaseFragment {
         super.onDestroyView();
     }
 
-    //    @Override
-//    public void onPause() {
-//        //update :adapter
-//        super.onPause();
-//    }
 }

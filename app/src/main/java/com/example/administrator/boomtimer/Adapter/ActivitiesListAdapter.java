@@ -165,9 +165,6 @@ public class ActivitiesListAdapter extends RecyclerView.Adapter<ActivitiesListAd
         }
     }
 
-    //方法不了解不要乱用，很浪费时间找原因的
-    //首先：知道用这个方法的效果是怎样的，别不知道效果就用，毕竟谁知道那是Bug还是特色呢？
-    //其次：从demo学习怎么使用它。
     public boolean isAlive() {
         if (mThread.isAlive()) {
             return true;

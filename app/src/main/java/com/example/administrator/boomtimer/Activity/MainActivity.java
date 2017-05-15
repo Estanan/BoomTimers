@@ -114,17 +114,22 @@ public class MainActivity extends AppCompatActivity {
             MyTime begin = historyList.get(0).getActivities().getBeginTime();
             String beginStr = SmallUtil.yearMouthDay(begin);
             History4View firstTitle = new History4View(VIEWTYPE, beginStr);
-            historyList.add(0,firstTitle);
+            historyList.add(0, firstTitle);
+            List<List<ActivityItem4View>> list = new ArrayList<>();
             for (int i = 1; i < historyList.size(); i++) {
                 String then = SmallUtil.yearMouthDay(historyList.get(i).getActivities().getBeginTime());
                 if (!then.equals(beginStr)) {
                     History4View thenTitle = new History4View(VIEWTYPE, then);
                     historyList.add(i, thenTitle);
+                    Tag tag=historyList.get(i).getTag();
+                    if (tag!=null){
+                        list.add(mDB.searchTag(tag.getId()));
+                    }
                     i++;
                     beginStr = then;
                 }
             }
-        } catch(Resources.NotFoundException e){
+        } catch (Resources.NotFoundException e) {
             historyList = new ArrayList<>();
         }
     }
@@ -160,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<SetItemInOrder> view2Order(List<ActivityItem4View> customSet4ViewList) {
         List<SetItemInOrder> list = new ArrayList<>();
-        for(int i = 0; i < customSet4ViewList.size(); i++) {
+        for (int i = 0; i < customSet4ViewList.size(); i++) {
             SetItemInOrder setItemInOrder = new SetItemInOrder(
                     customSet4ViewList.get(i).getSet().getSetID(),
                     customSet4ViewList.get(i).getState());
