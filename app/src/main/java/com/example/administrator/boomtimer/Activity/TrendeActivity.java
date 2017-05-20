@@ -12,6 +12,8 @@ import com.example.administrator.boomtimer.model.Tag;
 import com.example.administrator.boomtimer.util.SmallUtil;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -42,11 +44,15 @@ public class TrendeActivity extends BaseActivity {
     private ArrayList<Entry> yValsline;
     private LineDataSet dataSetline;
     private Random randomline;
+    private int tagId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.fragment_history);
+        Bundle extras = getIntent().getExtras();
+        tagId = extras.getInt("tagId");
+        initData();
         lineChart = (LineChart) findViewById(R.id.spread_line_chart);
         chart = (PieChart) findViewById(R.id.spread_pie_chart);
         yVals = new ArrayList<>();
@@ -55,31 +61,33 @@ public class TrendeActivity extends BaseActivity {
         yValsline = new ArrayList<>();
         xValsline = new ArrayList<String>();
         randomline = new Random();
-        for (int i = 0; i < 6; i++) {
-            float profix = random.nextFloat() * 1000;
-            yVals.add(new Entry(profix, i));
-            xVals.add((i + 1) + "月");
+        if (historyList == null || historyList.size() == 0) {
+            yVals.add(new Entry(0, 0));
+            xVals.add(0 + "月");
+        } else {
+            for (int i = 0; i < historyList.size(); i++) {
+                yVals.add(new Entry(historyList.get(i).getActivities().getDuration(), i));
+                xVals.add((historyList.get(i).getActivities().getBeginTime()).getMonth() + "月" +
+                        historyList.get(i).getActivities().getBeginTime().getDay() + "日");
+            }
+
         }
 
-        dataSet = new PieDataSet(yVals, "事件时间");
+        dataSet = new PieDataSet(yVals, "持续时间");
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
         data = new PieData(xVals, dataSet);
-        chart.setDescription("事件时间");
         chart.setData(data);
+
         chart.animateY(3000);
 
-        for (int i = 0; i < 12; i++) {
-            float profix = randomline.nextFloat();
-            ;
-            yValsline.add(new Entry(profix, i));
-            xValsline.add((i + 1) + "月");
-        }
-        dataSetline = new LineDataSet(yValsline, "事件时间");
+        dataSetline = new LineDataSet(yVals, "持续时间");
         dataSetline.setColors(ColorTemplate.COLORFUL_COLORS);
-        dataline = new LineData(xValsline, dataSetline);
+        dataline = new LineData(xVals, dataSetline);
         lineChart.setData(dataline);
-        lineChart.setDescription("事件时间");
         lineChart.animateY(3000);
+        lineChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        YAxis rightAxis = lineChart.getAxisRight();
+        rightAxis.setEnabled(false);
         initData();
     }
 
@@ -87,34 +95,9 @@ public class TrendeActivity extends BaseActivity {
     public static DB mDB;
 
     private void initData() {
-        try {
-            mDB = DB.getInstance(this);
-            historyList = mDB.loadAllHistory();
-            MyTime begin = historyList.get(0).getActivities().getBeginTime();
-            String beginStr = SmallUtil.yearMouthDay(begin);
-            History4View firstTitle = new History4View(1, beginStr);
-            historyList.add(0, firstTitle);
-            List<List<ActivityItem4View>> list = new ArrayList<>();
-            int tagId;
-            Tag tag;
-            for (int i = 1; i < historyList.size(); i++) {
-                String then = SmallUtil.yearMouthDay(historyList.get(i).getActivities().getBeginTime());
-
-                History4View thenTitle = new History4View(1, then);
-//                    historyList.add(i, thenTitle);
-                tag = historyList.get(i).getTag();
-                if (tag != null) {
-                    list.add(mDB.searchTag(tag.getId()));
-                }
-                i++;
-                beginStr = then;
-
-            }
-            list.size();
-        } catch (Resources.NotFoundException e) {
-            historyList = new ArrayList<>();
-        }
-
+        mDB = DB.getInstance(this);
+        historyList = mDB.searchTag(tagId);
+        historyList.size();
     }
 
     @Override

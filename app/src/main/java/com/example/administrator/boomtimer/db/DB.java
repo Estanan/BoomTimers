@@ -574,9 +574,8 @@ public class DB {
         updateTagOrder(tagOrder);
     }
 
-    public List<ActivityItem4View> searchTag(int tagId) {
+    public List<History4View> searchTag(int tagId) {
         Cursor cursor = db.query(Constant.TABLE_SET, null, "tag_id like ?", new String[]{tagId + ""}, null, null, "id desc", null);
-        List<ActivityItem4View> list = new ArrayList<>();
         Set set = null;
         List<Set> mSetList = new ArrayList<>();
         if (cursor.moveToFirst()) {
@@ -598,15 +597,20 @@ public class DB {
             } while (cursor.moveToNext());
         }
         mSetList.size();
-        List<Tag> mTagList = new ArrayList<>();
-        ActivityItem4View customSet4View;
-        for (int i = 0; i < mSetList.size(); i++) {
-            customSet4View = new ActivityItem4View();
-            customSet4View.setTag(loadTag(mSetList.get(i).getTagID()));
-            customSet4View.setSet(mSetList.get(i));
-            list.add(customSet4View);
+        List<Activities> list = new LinkedList<>();
+        List<History4View> backList = new ArrayList<>();
+        loadAllActivities(list);
+        if (list.size() == 0) {
+            throw new Resources.NotFoundException();
         }
-        Log.i(TAG, "" + mTagList.size());
-        return list;
+        QuickSort.sort(list, 0, list.size() - 1);
+        for (int i = 0; i < mSetList.size(); i++) {
+            Set set1 = mSetList.get(i);
+            Tag tag = loadTag(set1.getTagID());
+            History4View history4View = new History4View(list.get(i), tag, 0);
+            backList.add(history4View);
+        }
+        backList.size();
+        return backList;
     }
 }

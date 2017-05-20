@@ -21,6 +21,7 @@ import com.github.mikephil.charting.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by shady on 2017/4/17.
@@ -34,6 +35,7 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
     private TextView mTvCurrentTime;
     private int currentColor;
     private boolean checkTag = false;
+    private Map<String, String> mMap;
 
     @Override
     public int getLayout() {

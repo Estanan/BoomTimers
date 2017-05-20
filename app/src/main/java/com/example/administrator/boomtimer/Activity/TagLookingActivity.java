@@ -43,6 +43,7 @@ public class TagLookingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(TagLookingActivity.this, TrendeActivity.class);
+                intent.putExtra("tagId", mTag.getId());
                 startActivity(intent);
 //                查看条形图
             }

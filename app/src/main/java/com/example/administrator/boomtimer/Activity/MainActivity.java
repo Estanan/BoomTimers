@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
             String beginStr = SmallUtil.yearMouthDay(begin);
             History4View firstTitle = new History4View(VIEWTYPE, beginStr);
             historyList.add(0, firstTitle);
-            List<List<ActivityItem4View>> list = new ArrayList<>();
+            List<List<History4View>> list = new ArrayList<>();
             for (int i = 1; i < historyList.size(); i++) {
                 String then = SmallUtil.yearMouthDay(historyList.get(i).getActivities().getBeginTime());
                 if (!then.equals(beginStr)) {
@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                     historyList.add(i, thenTitle);
                     Tag tag=historyList.get(i).getTag();
                     if (tag!=null){
-                        list.add(mDB.searchTag(tag.getId()));
+//                        list.add(mDB.searchTag(tag.getId()));
                     }
                     i++;
                     beginStr = then;
