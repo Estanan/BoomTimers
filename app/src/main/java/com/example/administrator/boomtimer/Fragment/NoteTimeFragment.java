@@ -10,13 +10,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.administrator.boomtimer.Activity.MainActivity;
 import com.example.administrator.boomtimer.Adapter.TagListAdapter;
 import com.example.administrator.boomtimer.R;
+import com.example.administrator.boomtimer.model.Activities;
+import com.example.administrator.boomtimer.model.ActivityItem4View;
+import com.example.administrator.boomtimer.model.MyTime;
+import com.example.administrator.boomtimer.model.NoteData;
+import com.example.administrator.boomtimer.model.Set;
 import com.example.administrator.boomtimer.model.Tag;
+import com.example.administrator.boomtimer.util.Constant;
+import com.example.administrator.boomtimer.util.SmallUtil;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.text.SimpleDateFormat;
@@ -35,7 +43,11 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
     private TextView mTvCurrentTime;
     private int currentColor;
     private boolean checkTag = false;
-    private Map<String, String> mMap;
+    private Map<Integer, String> mMap;
+    private int currentTagId;
+    private String currentTagName;
+    private Button btnOk;
+    private ArrayList<NoteData> mDatas;
 
     @Override
     public int getLayout() {
@@ -46,11 +58,13 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
     public void initViews(View view) {
         mChecked = (TextView) view.findViewById(R.id.add_content);
         listShow = (Button) view.findViewById(R.id.list_show);
+        btnOk = (Button) view.findViewById(R.id.ok);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String date = sdf.format(new java.util.Date());
         mTvCurrentTime = (TextView) view.findViewById(R.id.tv_date);
         mTvCurrentTime.setText(date);
         listShow.setOnClickListener(this);
+        btnOk.setOnClickListener(this);
         recyclerView = (RecyclerView) view.findViewById(R.id.timeblock);
         tagRecyclerView = (RecyclerView) view.findViewById(R.id.list_tag);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 2));
@@ -62,6 +76,8 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void onItemClick(View view, Tag tag) {
                 checkTag = true;
+                currentTagId = tag.getId();
+                currentTagName = tag.getName();
                 currentColor = tag.getColor();
                 Toast.makeText(getActivity(), tag.getName() + "", Toast.LENGTH_SHORT).show();
             }
@@ -80,17 +96,49 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
                 tagRecyclerView.setVisibility(tagRecyclerView.getVisibility() != View.GONE ? View.GONE : View.VISIBLE);
                 listShow.setText(listShow.getText().equals("-") ? "+" : "-");
                 break;
+            case R.id.ok:
+                addActivity();
+                break;
         }
+    }
+
+    private void addCustom(Tag tag) {
+        MyTime time = SmallUtil.gainTime();
+        Set set = new Set(tag.getId(), "", 0, time);
+        int setId = MainActivity.mDB.saveSet(set);
+        set.setSetID(setId);
+        ActivityItem4View customSet4View = new ActivityItem4View(Constant.STATE_PLAY,
+                tag,
+                set);
+        MainActivity.setList.add(0, customSet4View);
+    }
+
+    private void addActivity() {
+        MyTime time = SmallUtil.gainTime();
+        mDatas.size();
+        for (int i = 0; i < mDatas.size(); i++) {
+            if (mDatas.get(i).getTagid() != 0) {
+                Set set = new Set(mDatas.get(i).getTagid(), "", 0, time);
+                int setId = MainActivity.mDB.saveSet(set);
+                Activities activities = new Activities(setId,
+                        time,
+                        time,
+                        200);
+                MainActivity.mDB.saveActivities(activities);
+            }
+
+        }
+
     }
 
 
     public class SelectAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        private ArrayList<String> mList = new ArrayList<>();
+        private ArrayList<NoteData> mList = new ArrayList<>();
 
         private SparseBooleanArray mSelectedPositions = new SparseBooleanArray();
         private boolean mIsSelectable = false;
-        private ArrayList<String> mDatas;
+        private NoteData mNotedata;
 
 
         public SelectAdapter() {
@@ -102,12 +150,14 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
         }
 
         private void initAdapterData() {
-            mDatas = new ArrayList<String>();
+            mDatas = new ArrayList<NoteData>();
             for (int i = 0; i < 48; i++) {
+                mNotedata = new NoteData();
                 int h = (i + 1) / 2;
                 String m = (i + 1) % 2 == 0 ? "00" : "30";
                 Log.i("shijian", i + "");
-                mDatas.add("" + h + ":" + m);
+                mNotedata.setName("" + h + ":" + m);
+                mDatas.add(mNotedata);
             }
         }
 
@@ -123,7 +173,7 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
             ArrayList<String> selectList = new ArrayList<>();
             for (int i = 0; i < mDatas.size(); i++) {
                 if (isItemChecked(i)) {
-                    selectList.add(mDatas.get(i));
+                    selectList.add(mDatas.get(i).getName());
                 }
             }
             return selectList;
@@ -161,7 +211,7 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int i) {
             //设置条目状态
             ((ListItemViewHolder) holder).checkBox.setChecked(isItemChecked(i));
-            ((ListItemViewHolder) holder).checkBox.setText(mDatas.get(i));
+            ((ListItemViewHolder) holder).checkBox.setText(mDatas.get(i).getName());
 
             //checkBox的监听
             ((ListItemViewHolder) holder).checkBox.setOnClickListener(new View.OnClickListener() {
@@ -177,6 +227,8 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
                         setItemChecked(i, true);
                     }
                     ((ListItemViewHolder) holder).checkBox.setBackgroundColor(isItemChecked(i) ? currentColor : 0);
+                    ((ListItemViewHolder) holder).checkBox.setText(isItemChecked(i) ? mDatas.get(i).getName() + currentTagName : mDatas.get(i).getName());
+                    mDatas.get(i).setTagid(currentTagId);
                     mChecked.setText("已选择" + getSelectedItem().size() * 0.5 + "小时");
                 }
             });
