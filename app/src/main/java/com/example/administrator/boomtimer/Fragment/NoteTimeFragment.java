@@ -102,33 +102,43 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    private void addCustom(Tag tag) {
-        MyTime time = SmallUtil.gainTime();
-        Set set = new Set(tag.getId(), "", 0, time);
-        int setId = MainActivity.mDB.saveSet(set);
-        set.setSetID(setId);
-        ActivityItem4View customSet4View = new ActivityItem4View(Constant.STATE_PLAY,
-                tag,
-                set);
-        MainActivity.setList.add(0, customSet4View);
-    }
-
     private void addActivity() {
         MyTime time = SmallUtil.gainTime();
+        MyTime time2 = SmallUtil.gainTime();
+
+        MyTime startTime = new MyTime();
+        MyTime endTime = new MyTime();
+
         mDatas.size();
         for (int i = 0; i < mDatas.size(); i++) {
             if (mDatas.get(i).getTagid() != 0) {
+                String hour = mDatas.get(i).getName().split(":")[0];
+                startTime = time;
+                startTime.setHour(Integer.parseInt(hour));
+                startTime.setMinute(0);
+                startTime.setSecond(0);
+
+                endTime = time2;
+                if (i % 2 != 0) {
+                    endTime.setHour(Integer.parseInt(hour) + 1);
+                    endTime.setMinute(30);
+                    endTime.setSecond(0);
+                } else {
+                    endTime.setHour(Integer.parseInt(hour) + 1);
+                    endTime.setMinute(0);
+                    endTime.setSecond(0);
+                }
+
                 Set set = new Set(mDatas.get(i).getTagid(), "", 0, time);
                 int setId = MainActivity.mDB.saveSet(set);
                 Activities activities = new Activities(setId,
-                        time,
-                        time,
-                        200);
+                        startTime,
+                        endTime,
+                        30 * 60);
                 MainActivity.mDB.saveActivities(activities);
             }
-
         }
-
+        Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG);
     }
 
 
