@@ -98,6 +98,8 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
                 break;
             case R.id.ok:
                 addActivity();
+                Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG).show();
+
                 break;
         }
     }
@@ -120,7 +122,7 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
 
                 endTime = time2;
                 if (i % 2 != 0) {
-                    endTime.setHour(Integer.parseInt(hour) + 1);
+                    endTime.setHour(Integer.parseInt(hour));
                     endTime.setMinute(30);
                     endTime.setSecond(0);
                 } else {
@@ -138,7 +140,6 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
                 MainActivity.mDB.saveActivities(activities);
             }
         }
-        Toast.makeText(getActivity(), "保存成功", Toast.LENGTH_LONG);
     }
 
 
