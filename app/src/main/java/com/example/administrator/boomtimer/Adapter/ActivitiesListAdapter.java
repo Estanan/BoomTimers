@@ -155,6 +155,7 @@ public class ActivitiesListAdapter extends RecyclerView.Adapter<ActivitiesListAd
 
     public void setStopThread() {
         stopThread = true;
+        pauseDoing = true;
     }
 
     public void controlThread(boolean keep) {

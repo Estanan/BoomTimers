@@ -153,6 +153,29 @@ public class DB {
         }
     }
 
+    //保存活动（Activities区别于android中的Activity）
+    public void saveTimeBlock(Activities activities) {
+        if (activities != null) {
+            ContentValues values = new ContentValues();
+            values.put(Constant.ACTIVITY_SET_ID, activities.getSetId());
+            values.put(Constant.ACTIVITY_DURATION, activities.getDuration());
+            values.put(Constant.ACTIVITY_BEGIN_YEAR, activities.getBeginTime().getYear());
+            values.put(Constant.ACTIVITY_BEGIN_MONTH, activities.getBeginTime().getMonth());
+            values.put(Constant.ACTIVITY_BEGIN_DAY, activities.getBeginTime().getDay());
+            values.put(Constant.ACTIVITY_BEGIN_HOUR, activities.getBeginTime().getHour());
+            values.put(Constant.ACTIVITY_BEGIN_MINUTE, activities.getBeginTime().getMinute());
+            values.put(Constant.ACTIVITY_BEGIN_SECOND, activities.getBeginTime().getSecond());
+            values.put(Constant.ACTIVITY_END_YEAR, activities.getEndTime().getYear());
+            values.put(Constant.ACTIVITY_END_MONTH, activities.getEndTime().getMonth());
+            values.put(Constant.ACTIVITY_END_DAY, activities.getEndTime().getDay());
+            values.put(Constant.ACTIVITY_END_HOUR, activities.getEndTime().getHour());
+            values.put(Constant.ACTIVITY_END_MINUTE, activities.getEndTime().getMinute());
+            values.put(Constant.ACTIVITY_END_SECOND, activities.getEndTime().getSecond());
+            db.insert(Constant.TIMEBLOCK, null, values);
+        }
+    }
+
+
 //    //添加标签//直接更新标签顺序，id才不会错
 //    public void addTagOrder(int tagId) {
 //        ContentValues values = new ContentValues();

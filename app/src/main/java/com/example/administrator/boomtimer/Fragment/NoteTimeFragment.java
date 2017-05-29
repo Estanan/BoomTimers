@@ -138,6 +138,7 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
                         endTime,
                         30 * 60);
                 MainActivity.mDB.saveActivities(activities);
+                MainActivity.mDB.saveTimeBlock(activities);
             }
         }
     }

@@ -33,8 +33,12 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TagListAdapter tagListAdapter;
     Toolbar toolbar;
+    public static String pushcontents;
 
-//    private List<Tag> mDatas = init();
+    //    private List<Tag> mDatas = init();
+    MyFragmentPagerAdapter pagerAdapter;
+    ViewPager viewPager;
+    TabLayout tabLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Log.e("MainActivity", "onCreate");
 
-        MyFragmentPagerAdapter pagerAdapter;
-        ViewPager viewPager;
-        TabLayout tabLayout;
+
         pagerAdapter = new MyFragmentPagerAdapter(getFragmentManager(), 5, this);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(5);
@@ -87,6 +89,12 @@ public class MainActivity extends AppCompatActivity {
         Log.e("MainActivity", "historyList " + historyList.size());
         /********************刷新*********************************/
         changedAll();
+
+        Bundle m = getIntent().getExtras();
+        if (m != null) {
+            pushcontents = m.getString("content");
+            viewPager.setCurrentItem(5);
+        }
     }
 
     public static void changedActivity() {
@@ -121,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
                 if (!then.equals(beginStr)) {
                     History4View thenTitle = new History4View(VIEWTYPE, then);
                     historyList.add(i, thenTitle);
-                    Tag tag=historyList.get(i).getTag();
-                    if (tag!=null){
+                    Tag tag = historyList.get(i).getTag();
+                    if (tag != null) {
 //                        list.add(mDB.searchTag(tag.getId()));
                     }
                     i++;

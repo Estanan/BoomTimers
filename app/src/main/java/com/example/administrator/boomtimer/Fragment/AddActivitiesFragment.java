@@ -78,6 +78,9 @@ public class AddActivitiesFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (activitiesAdapter == null) {
+            return;
+        }
         if (activitiesAdapter.isAlive()) {
             activitiesAdapter.controlThread(true);
         } else {
@@ -89,7 +92,9 @@ public class AddActivitiesFragment extends BaseFragment {
     @Override
     public void onPause() {
 //        super.onPause();
-        activitiesAdapter.controlThread(false);
+        if (activitiesAdapter != null) {
+            activitiesAdapter.controlThread(false);
+        }
         super.onPause();
     }
 

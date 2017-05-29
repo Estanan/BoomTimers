@@ -1,9 +1,13 @@
 package com.example.administrator.boomtimer.Fragment;
 
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.administrator.boomtimer.R;
+
+import static com.example.administrator.boomtimer.Activity.MainActivity.pushcontents;
 
 /**
  * Created by Administrator on 2016/8/22.
@@ -11,9 +15,12 @@ import com.example.administrator.boomtimer.R;
 public class MoreFragment extends BaseFragment {
 
     public static final String TAG = "MoreFragment";
+    private TextView mTextView;
 
     @Override
     public void initViews(View view) {
+
+        mTextView= (TextView) view.findViewById(R.id.pushcontent);
     }
 
     @Override
@@ -32,11 +39,12 @@ public class MoreFragment extends BaseFragment {
 //        Log.e(TAG, "onAttach");
 //    }
 //
-//    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        Log.e(TAG, "onCreate");
-//    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        Log.e(TAG, "onCreate");
+    }
 //
 //    @Nullable
 //    @Override

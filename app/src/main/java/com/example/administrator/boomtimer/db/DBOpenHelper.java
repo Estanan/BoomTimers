@@ -52,6 +52,24 @@ public class DBOpenHelper extends SQLiteOpenHelper {
             Constant.ACTIVITY_END_SECOND + " integer, " +
             Constant.ACTIVITY_DURATION + " integer)";
 
+    public static final String CREATE_TIMEBLOCK = "create table " +
+            Constant.TIMEBLOCK + "(" +
+            "id integer primary key autoincrement, " +
+            Constant.ACTIVITY_SET_ID + " integer, " +
+            Constant.ACTIVITY_BEGIN_YEAR + " integer, " +
+            Constant.ACTIVITY_BEGIN_MONTH + " integer, " +
+            Constant.ACTIVITY_BEGIN_DAY + " integer, " +
+            Constant.ACTIVITY_BEGIN_HOUR + " integer, " +
+            Constant.ACTIVITY_BEGIN_MINUTE + " integer, " +
+            Constant.ACTIVITY_BEGIN_SECOND + " integer, " +
+            Constant.ACTIVITY_END_YEAR + " integer, " +
+            Constant.ACTIVITY_END_MONTH + " integer, " +
+            Constant.ACTIVITY_END_DAY + " integer, " +
+            Constant.ACTIVITY_END_HOUR + " integer, " +
+            Constant.ACTIVITY_END_MINUTE + " integer, " +
+            Constant.ACTIVITY_END_SECOND + " integer, " +
+            Constant.ACTIVITY_DURATION + " integer)";
+
     public static final String CREATE_SET_ORDER = "create table " +
             Constant.TABLE_SET_ORDER + "(" +
             "id integer primary key autoincrement, " +
@@ -86,6 +104,7 @@ public class DBOpenHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_SET);
         db.execSQL(CREATE_SET_ORDER);
         db.execSQL(CREATE_TAG_ORDER);
+        db.execSQL(CREATE_TIMEBLOCK);
         String insertTag = "insert into " + Constant.TABLE_TAG + " (" +
                 Constant.TAG_NAME + "," +
                 Constant.TAG_ICON + "," +
