@@ -13,6 +13,7 @@ import com.example.administrator.boomtimer.model.MyTime;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  *
@@ -133,6 +134,22 @@ public class SmallUtil {
     public static String monthDay(MyTime time) {
         String back = time.getHour() + ":" + time.getMinute() + ":" + time.getSecond();
         return back;
+    }
+
+    /**
+     * 获取签名时间
+     *
+     * @return
+     */
+    public static String getSignatureTime() {
+        long epoch = new Date().getTime();
+        long value = epoch / 1000;
+        //Log.d(TAG, "unix stamp is "+epoch+", the return result  is" + value );
+        return String.valueOf(value);
+    }
+
+    public static String getSignature() {
+        return "sign";
     }
 
 }

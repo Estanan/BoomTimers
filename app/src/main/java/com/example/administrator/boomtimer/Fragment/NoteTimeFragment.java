@@ -23,13 +23,20 @@ import com.example.administrator.boomtimer.model.MyTime;
 import com.example.administrator.boomtimer.model.NoteData;
 import com.example.administrator.boomtimer.model.Set;
 import com.example.administrator.boomtimer.model.Tag;
+import com.example.administrator.boomtimer.model.WeatherBean;
+import com.example.administrator.boomtimer.network.BaseCallBack;
+import com.example.administrator.boomtimer.network.WebRetrofitService;
 import com.example.administrator.boomtimer.util.Constant;
 import com.example.administrator.boomtimer.util.SmallUtil;
 import com.github.mikephil.charting.utils.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * Created by shady on 2017/4/17.
@@ -48,6 +55,8 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
     private String currentTagName;
     private Button btnOk;
     private ArrayList<NoteData> mDatas;
+    private TextView mTvWeather;
+    private String weatherInfo;
 
     @Override
     public int getLayout() {
@@ -55,7 +64,14 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        loadData();
+    }
+
+    @Override
     public void initViews(View view) {
+        mTvWeather = (TextView) view.findViewById(R.id.tv_weather);
         mChecked = (TextView) view.findViewById(R.id.add_content);
         listShow = (Button) view.findViewById(R.id.list_show);
         btnOk = (Button) view.findViewById(R.id.ok);
@@ -82,11 +98,43 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
                 Toast.makeText(getActivity(), tag.getName() + "", Toast.LENGTH_SHORT).show();
             }
         });
+
+        mTvWeather.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+            }
+        });
     }
 
     @Override
     public void loadData() {
+        WeatherBean weath = new WeatherBean();
+        Map<String, String> map = new HashMap<>();
+        map.put("city", "徐州");
+        map.put("key", Constant.weatherKey);
+        WebRetrofitService.getInstance().getWeather(weath, map, new BaseCallBack<WeatherBean>() {
+                    @Override
+                    public void onResponse(Call<WeatherBean> call, Response<WeatherBean> response) {
+                        super.onResponse(call, response);
+                        if (response != null) {
+                            WeatherBean rsp = response.body();
+                            if (rsp != null) {
+                                weatherInfo = rsp.getHeWeather5().get(0).getBasic().getCity() + "当前" +
+                                        rsp.getHeWeather5().get(0).getNow().getCond().getTxt() +
+                                        "气温" + rsp.getHeWeather5().get(0).getNow().getTmp() + "℃";
+                                mTvWeather.setText(weatherInfo);
+                            }
+                        }
+                    }
 
+                    @Override
+                    public void onFailure(Call<WeatherBean> call, Throwable t) {
+                        super.onFailure(call, t);
+                    }
+                }
+
+        );
     }
 
     @Override

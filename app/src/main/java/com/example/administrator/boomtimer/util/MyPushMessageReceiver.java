@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,7 +39,9 @@ import android.util.Log;
  */
 
 public class MyPushMessageReceiver extends PushMessageReceiver {
-    /** TAG to Log */
+    /**
+     * TAG to Log
+     */
     public static final String TAG = MyPushMessageReceiver.class
             .getSimpleName();
 
@@ -47,23 +50,17 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
      * server发起绑定请求，这个过程是异步的。绑定请求的结果通过onBind返回。 如果您需要用单播推送，需要把这里获取的channel
      * id和user id上传到应用server中，再调用server接口用channel id和user id给单个手机或者用户推送。
      *
-     * @param context
-     *            BroadcastReceiver的执行Context
-     * @param errorCode
-     *            绑定接口返回值，0 - 成功
-     * @param appid
-     *            应用id。errorCode非0时为null
-     * @param userId
-     *            应用user id。errorCode非0时为null
-     * @param channelId
-     *            应用channel id。errorCode非0时为null
-     * @param requestId
-     *            向服务端发起的请求id。在追查问题时有用；
+     * @param context   BroadcastReceiver的执行Context
+     * @param errorCode 绑定接口返回值，0 - 成功
+     * @param appid     应用id。errorCode非0时为null
+     * @param userId    应用user id。errorCode非0时为null
+     * @param channelId 应用channel id。errorCode非0时为null
+     * @param requestId 向服务端发起的请求id。在追查问题时有用；
      * @return none
      */
     @Override
     public void onBind(Context context, int errorCode, String appid,
-            String userId, String channelId, String requestId) {
+                       String userId, String channelId, String requestId) {
         String responseString = "onBind errorCode=" + errorCode + " appid="
                 + appid + " userId=" + userId + " channelId=" + channelId
                 + " requestId=" + requestId;
@@ -74,22 +71,19 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
             Log.d(TAG, "绑定成功");
         }
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, responseString);
+//        updateContent(context, responseString);
     }
 
     /**
      * 接收透传消息的函数。
      *
-     * @param context
-     *            上下文
-     * @param message
-     *            推送的消息
-     * @param customContentString
-     *            自定义内容,为空或者json字符串
+     * @param context             上下文
+     * @param message             推送的消息
+     * @param customContentString 自定义内容,为空或者json字符串
      */
     @Override
     public void onMessage(Context context, String message,
-            String customContentString) {
+                          String customContentString) {
         String messageString = "透传消息 onMessage=\"" + message
                 + "\" customContentString=" + customContentString;
         Log.d(TAG, messageString);
@@ -110,25 +104,21 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
         }
 
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, messageString);
+//        updateContent(context, messageString);
     }
 
     /**
      * 接收通知到达的函数。
      *
-     * @param context
-     *            上下文
-     * @param title
-     *            推送的通知的标题
-     * @param description
-     *            推送的通知的描述
-     * @param customContentString
-     *            自定义内容，为空或者json字符串
+     * @param context             上下文
+     * @param title               推送的通知的标题
+     * @param description         推送的通知的描述
+     * @param customContentString 自定义内容，为空或者json字符串
      */
 
     @Override
     public void onNotificationArrived(Context context, String title,
-            String description, String customContentString) {
+                                      String description, String customContentString) {
 
         String notifyString = "通知到达 onNotificationArrived  title=\"" + title
                 + "\" description=\"" + description + "\" customContent="
@@ -151,24 +141,20 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
         }
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
         // 你可以參考 onNotificationClicked中的提示从自定义内容获取具体值
-        updateContent(context, notifyString);
+//        updateContent(context, notifyString);
     }
 
     /**
      * 接收通知点击的函数。
      *
-     * @param context
-     *            上下文
-     * @param title
-     *            推送的通知的标题
-     * @param description
-     *            推送的通知的描述
-     * @param customContentString
-     *            自定义内容，为空或者json字符串
+     * @param context             上下文
+     * @param title               推送的通知的标题
+     * @param description         推送的通知的描述
+     * @param customContentString 自定义内容，为空或者json字符串
      */
     @Override
     public void onNotificationClicked(Context context, String title,
-            String description, String customContentString) {
+                                      String description, String customContentString) {
         String notifyString = "通知点击 onNotificationClicked title=\"" + title + "\" description=\""
                 + description + "\" customContent=" + customContentString;
         Log.d(TAG, notifyString);
@@ -189,89 +175,74 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
         }
 
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, notifyString);
-    }    
-    
+        updateContent(context, description);
+    }
+
     /**
      * setTags() 的回调函数。
      *
-     * @param context
-     *            上下文
-     * @param errorCode
-     *            错误码。0表示某些tag已经设置成功；非0表示所有tag的设置均失败。
-     * @param failTags
-     *            设置失败的tag
-     * @param requestId
-     *            分配给对云推送的请求的id
+     * @param context   上下文
+     * @param errorCode 错误码。0表示某些tag已经设置成功；非0表示所有tag的设置均失败。
+     * @param failTags  设置失败的tag
+     * @param requestId 分配给对云推送的请求的id
      */
     @Override
     public void onSetTags(Context context, int errorCode,
-            List<String> sucessTags, List<String> failTags, String requestId) {
+                          List<String> sucessTags, List<String> failTags, String requestId) {
         String responseString = "onSetTags errorCode=" + errorCode
                 + " sucessTags=" + sucessTags + " failTags=" + failTags
                 + " requestId=" + requestId;
         Log.d(TAG, responseString);
 
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, responseString);
+//        updateContent(context, responseString);
     }
 
     /**
      * delTags() 的回调函数。
      *
-     * @param context
-     *            上下文
-     * @param errorCode
-     *            错误码。0表示某些tag已经删除成功；非0表示所有tag均删除失败。
-     * @param failTags
-     *            删除失败的tag
-     * @param requestId
-     *            分配给对云推送的请求的id
+     * @param context   上下文
+     * @param errorCode 错误码。0表示某些tag已经删除成功；非0表示所有tag均删除失败。
+     * @param failTags  删除失败的tag
+     * @param requestId 分配给对云推送的请求的id
      */
     @Override
     public void onDelTags(Context context, int errorCode,
-            List<String> sucessTags, List<String> failTags, String requestId) {
+                          List<String> sucessTags, List<String> failTags, String requestId) {
         String responseString = "onDelTags errorCode=" + errorCode
                 + " sucessTags=" + sucessTags + " failTags=" + failTags
                 + " requestId=" + requestId;
         Log.d(TAG, responseString);
 
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, responseString);
+//        updateContent(context, responseString);
     }
 
     /**
      * listTags() 的回调函数。
      *
-     * @param context
-     *            上下文
-     * @param errorCode
-     *            错误码。0表示列举tag成功；非0表示失败。
-     * @param tags
-     *            当前应用设置的所有tag。
-     * @param requestId
-     *            分配给对云推送的请求的id
+     * @param context   上下文
+     * @param errorCode 错误码。0表示列举tag成功；非0表示失败。
+     * @param tags      当前应用设置的所有tag。
+     * @param requestId 分配给对云推送的请求的id
      */
     @Override
     public void onListTags(Context context, int errorCode, List<String> tags,
-            String requestId) {
+                           String requestId) {
         String responseString = "onListTags errorCode=" + errorCode + " tags="
                 + tags;
         Log.d(TAG, responseString);
 
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, responseString);
+//        updateContent(context, responseString);
     }
 
     /**
      * PushManager.stopWork() 的回调函数。
      *
-     * @param context
-     *            上下文
-     * @param errorCode
-     *            错误码。0表示从云推送解绑定成功；非0表示失败。
-     * @param requestId
-     *            分配给对云推送的请求的id
+     * @param context   上下文
+     * @param errorCode 错误码。0表示从云推送解绑定成功；非0表示失败。
+     * @param requestId 分配给对云推送的请求的id
      */
     @Override
     public void onUnbind(Context context, int errorCode, String requestId) {
@@ -284,14 +255,14 @@ public class MyPushMessageReceiver extends PushMessageReceiver {
             Log.d(TAG, "解绑成功");
         }
         // Demo更新界面展示代码，应用请在这里加入自己的处理逻辑
-        updateContent(context, responseString);
+//        updateContent(context, responseString);
     }
 
     private void updateContent(Context context, String content) {
         Log.d(TAG, "updateContent");
         Intent intent = new Intent();
         intent.setClass(context.getApplicationContext(), MainActivity.class);
-        intent.putExtra("content",content);
+        EventBus.getDefault().post(content);
         context.getApplicationContext().startActivity(intent);
     }
 

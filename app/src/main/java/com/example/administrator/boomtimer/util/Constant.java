@@ -4,14 +4,16 @@ package com.example.administrator.boomtimer.util;
  */
 public class Constant {
 
+    public static final String BASE_URL = "https://free-api.heweather.com/";
+    public static final String weatherKey = "86d17bc183f74cb9a0678b9c58527005";
     //set,order,commit均是sqlite的保留关键字
     public static int STATE_PLAY = 100;
     public static int STATE_PAUSE = 101;
-//    public static int STATE_STOP = 102;
+    //    public static int STATE_STOP = 102;
     public static String TABLE_TAG = "Tag";
     public static String TABLE_SET = "SetTable";
     public static String TABLE_ACTIVITY = "Activity";
-    public static String TIMEBLOCK="Timeblock";
+    public static String TIMEBLOCK = "Timeblock";
     public static String TABLE_TAG_ORDER = "TagOrder";
     public static String TABLE_SET_ORDER = "SetOrder";
     public static String TABLE_ICON = "Icon";

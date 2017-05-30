@@ -25,6 +25,10 @@ import com.example.administrator.boomtimer.model.SetItemInOrder;
 import com.example.administrator.boomtimer.model.Tag;
 import com.example.administrator.boomtimer.util.SmallUtil;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -89,12 +94,6 @@ public class MainActivity extends AppCompatActivity {
         Log.e("MainActivity", "historyList " + historyList.size());
         /********************刷新*********************************/
         changedAll();
-
-        Bundle m = getIntent().getExtras();
-        if (m != null) {
-            pushcontents = m.getString("content");
-            viewPager.setCurrentItem(5);
-        }
     }
 
     public static void changedActivity() {
@@ -180,5 +179,18 @@ public class MainActivity extends AppCompatActivity {
             list.add(setItemInOrder);
         }
         return list;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMoonEvent(String content) {
+        Log.i("shady", "content" + content);
+        pushcontents = content;
+        viewPager.setCurrentItem(5);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }

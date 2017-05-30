@@ -20,7 +20,7 @@ public class MoreFragment extends BaseFragment {
     @Override
     public void initViews(View view) {
 
-        mTextView= (TextView) view.findViewById(R.id.pushcontent);
+        mTextView = (TextView) view.findViewById(R.id.pushcontent);
     }
 
     @Override
@@ -33,7 +33,8 @@ public class MoreFragment extends BaseFragment {
         Log.e("AddActivitiesFragment", "loadData");
 //        getActivity().setTitle("More");
     }
-//    @Override
+
+    //    @Override
 //    public void onAttach(Context context) {
 //        super.onAttach(context);
 //        Log.e(TAG, "onAttach");
@@ -45,7 +46,8 @@ public class MoreFragment extends BaseFragment {
 
         Log.e(TAG, "onCreate");
     }
-//
+
+    //
 //    @Nullable
 //    @Override
 //    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,11 +68,12 @@ public class MoreFragment extends BaseFragment {
 //        Log.e(TAG, "onStart");
 //    }
 //
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        Log.e(TAG, "onResume");
-//    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        mTextView.setText(pushcontents);
+        Log.e(TAG, "onResume");
+    }
 //
 //    @Override
 //    public void onPause() {
