@@ -131,6 +131,18 @@ public class DB {
         }
     }
 
+    public void updateTag(Tag tag) {
+        if (tag != null) {
+            ContentValues values = new ContentValues();
+            //autoincrement id是自增长的，需要读取但不需要保存。
+            values.put(Constant.TAG_COLOR, tag.getColor());
+            values.put(Constant.TAG_ICON, tag.getIcon());
+            values.put(Constant.TAG_NAME, tag.getName());
+            db.update(Constant.TABLE_TAG, values, "id = ?", new String[]{"" + tag.getId()});
+        }
+    }
+
+
     //保存活动（Activities区别于android中的Activity）
     public void saveActivities(Activities activities) {
         if (activities != null) {
@@ -512,7 +524,7 @@ public class DB {
             cursor.close();
         }
         if (!exist) {
-            throw new Resources.NotFoundException();
+//            throw new Resources.NotFoundException();
         }
     }
 
@@ -624,7 +636,8 @@ public class DB {
         List<History4View> backList = new ArrayList<>();
         loadAllActivities(list);
         if (list.size() == 0) {
-            throw new Resources.NotFoundException();
+            return null;
+//            throw new Resources.NotFoundException();
         }
         QuickSort.sort(list, 0, list.size() - 1);
         for (int i = 0; i < mSetList.size(); i++) {

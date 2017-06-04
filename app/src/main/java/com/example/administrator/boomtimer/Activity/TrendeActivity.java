@@ -67,8 +67,8 @@ public class TrendeActivity extends BaseActivity {
         } else {
             for (int i = 0; i < historyList.size(); i++) {
                 yVals.add(new Entry(historyList.get(i).getActivities().getDuration(), i));
-                xVals.add((historyList.get(i).getActivities().getBeginTime()).getMonth() + "月" +
-                        historyList.get(i).getActivities().getBeginTime().getDay() + "日");
+                xVals.add((historyList.get(i).getActivities().getBeginTime()).getHour() + "时" +
+                        historyList.get(i).getActivities().getBeginTime().getMinute() + "分");
             }
 
         }
@@ -94,10 +94,11 @@ public class TrendeActivity extends BaseActivity {
     public static List<History4View> historyList;
     public static DB mDB;
 
-    private void initData() {
+    private void initData() throws Resources.NotFoundException{
         mDB = DB.getInstance(this);
+
         historyList = mDB.searchTag(tagId);
-        historyList.size();
+//        historyList.size();
     }
 
     @Override

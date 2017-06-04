@@ -102,7 +102,7 @@ public class NoteTimeFragment extends BaseFragment implements View.OnClickListen
         mTvWeather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+
             }
         });
     }

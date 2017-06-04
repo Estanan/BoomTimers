@@ -50,6 +50,8 @@ public class EditAddTagActivity extends AppCompatActivity implements View.OnClic
         newTag = new Tag();
         intent = getIntent();
         tag = (Tag) intent.getSerializableExtra("tag");
+        colorId=tag.getId();
+        iconId=tag.getIcon();
         //修改还是添加
         if (tag.getName().equals("")) {
             //添加新的
@@ -77,8 +79,14 @@ public class EditAddTagActivity extends AppCompatActivity implements View.OnClic
                         newTag.setName(tagName.getText().toString());
                         newTag.setColor(colorId);
                         newTag.setIcon(iconId);
-                        if (!tag.equals(newTag)) {
+                        if (tag.getName().equals("")) {
                             mDB.addAboutTag(newTag);
+                            backIntent(newTag);
+                        } else {
+                            tag.setName(tagName.getText().toString());
+                            tag.setColor(colorId);
+                            tag.setIcon(iconId);
+                            mDB.updateTag(tag);
                             backIntent(newTag);
                         }
                         break;
